@@ -3,8 +3,8 @@ class Film < ActiveRecord::Base
   set_primary_key(:film_id)
 
   has_many :film_actors
-  has_many :actor, :through => :film_actor
-  has_many :category
+  has_many :actors, :through => :film_actors
+  has_many :categories
 
   def self.largest_cast
     Film.select('film.*, COUNT(*) AS cast_count')
@@ -12,7 +12,6 @@ class Film < ActiveRecord::Base
     .group(:film_id)
     .order('cast_count DESC')
     .limit(1)
-
   end
 
 end

@@ -14,5 +14,12 @@ class Actor < ActiveRecord::Base
     .limit(1)
   end
 
+  def self.longest_career
+    Actor.select('actor.*, MAX(release_year) - MIN(release_year) AS career_length')
+    .joins(:films)
+    .group(:actor_id)
+    .order('career_length DESC')
+    .limit(1)
+  end
 
 end
