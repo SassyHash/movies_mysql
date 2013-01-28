@@ -7,12 +7,12 @@ class Actor < ActiveRecord::Base
   has_many :categories
 
   def self.most_films
-    actors = Actor.select('actor.*, COUNT(*) AS film_count')
+    Actor.select('actor.*, COUNT(*) AS film_count')
     .joins(:film_actors)
     .group(:actor_id)
     .order('film_count DESC')
-    actors.first
+    .limit(1)
   end
 
-  
+
 end

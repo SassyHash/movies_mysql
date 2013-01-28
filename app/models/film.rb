@@ -6,4 +6,13 @@ class Film < ActiveRecord::Base
   has_many :actor, :through => :film_actor
   has_many :category
 
+  def self.largest_cast
+    Film.select('film.*, COUNT(*) AS cast_count')
+    .joins(:film_actors)
+    .group(:film_id)
+    .order('cast_count DESC')
+    .limit(1)
+
+  end
+
 end
