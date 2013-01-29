@@ -6,9 +6,9 @@ class Film < ActiveRecord::Base
   has_many :actors, :through => :film_actors
   has_many :categories
 
-  has_many :inventory
-  has_many :stores, :through => :inventory
-  has_many :rentals, :through => :inventory
+  has_many :inventories
+  has_many :stores, :through => :inventories
+  has_many :rentals, :through => :inventories
 
   def self.largest_cast
     Film.select('film.*, COUNT(*) AS cast_count')
@@ -20,7 +20,7 @@ class Film < ActiveRecord::Base
 
   def self.most_stores
     Film.select('film.*, COUNT(DISTINCT store_id) AS store_count')
-    .joins(:inventory)
+    .joins(:inventories)
     .group(:film_id)
     .order('store_count DESC')
     .limit(1)
@@ -28,7 +28,7 @@ class Film < ActiveRecord::Base
 
   def self.largest_inventory
     Film.select('film.*, COUNT(*) AS film_count')
-    .joins(:inventory)
+    .joins(:inventories)
     .group(:film_id)
     .order('film_count DESC')
     .limit(1)

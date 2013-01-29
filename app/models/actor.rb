@@ -22,4 +22,11 @@ class Actor < ActiveRecord::Base
     .limit(1)
   end
 
+  def self.most_popular_by_country
+    Actor.select('actor.*, COUNT(*) AS actor_count')
+    .joins(:films => {:inventories => {:stores => {:address => {:city => :countries}}}})
+    .group(:country_id)
+    .order('actor_count DESC')
+    .limit(5)
+  end
 end
